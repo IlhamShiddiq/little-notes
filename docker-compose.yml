@@ -1,0 +1,6 @@
+services:
+  little-notes:
+    container_name: little-notes
+    image: little-notes:latest
+    ports:
+      - 8089:8089
