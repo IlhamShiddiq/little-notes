@@ -98,7 +98,7 @@ $white_color: #FFFFFF;
             }
 
             .modal-content__body {
-                width: 280px !important;
+                width: 300px !important;
                 padding: 15px !important;
 
                 .modal-content__title {
@@ -147,6 +147,7 @@ $white_color: #FFFFFF;
         width: 100%;
         padding: 0 !important;
         box-sizing: border-box;
+        margin-bottom: 40px;
     
         .app-bar__body {
             width: 100%;
