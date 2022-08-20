@@ -1,8 +1,9 @@
 import React from "react"
+import './AppBar.scss'
 
-import ButtonAction from './ButtonAction'
-import SearchBar from "./SearchBar"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import ButtonAction from '../ButtonAction/ButtonAction'
+import SearchBar from "../SearchBar/SearchBar"
+import { FiPlus, FiArchive, FiGrid, FiList } from "react-icons/fi"
 
 const AppBar = ({display, onDisplayChangeHandler, onCreateNoteHandler, onArchievedNoteHandler, onSearchKeyPressHandler}) => {
     return (
@@ -13,11 +14,11 @@ const AppBar = ({display, onDisplayChangeHandler, onCreateNoteHandler, onArchiev
                     <p>never forget anything</p>
                 </div>
                 <div className="app-bar__action">
-                    <ButtonAction label={<FontAwesomeIcon icon="fa-solid fa-plus" />} onClickHandler={onCreateNoteHandler} />
-                    <ButtonAction label={<FontAwesomeIcon icon="fa-solid fa-box-archive"/>} onClickHandler={onArchievedNoteHandler} />
+                    <ButtonAction label={<FiPlus size={50} />} onClickHandler={onCreateNoteHandler} />
+                    <ButtonAction label={<FiArchive size={50} />} onClickHandler={onArchievedNoteHandler} />
                     <ButtonAction label={
-                        display === 'list' ? <FontAwesomeIcon icon="fa-solid fa-grip" />
-                            : <FontAwesomeIcon icon="fa-solid fa-list" />
+                        display === 'list' ? <FiGrid size={50} />
+                            : <FiList size={50} />
                     } onClickHandler={onDisplayChangeHandler} />
                 </div>
                 <SearchBar onSearchKeyPressHandler={onSearchKeyPressHandler} />

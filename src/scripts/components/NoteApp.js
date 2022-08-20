@@ -1,9 +1,9 @@
 import React from "react"
 
-import AppBar from './AppBar/AppBar'
-import NoteList from "./NoteCard/NoteList"
-import CreateNoteModal from "./Modal/CreateNoteModal"
-import ArchievedNoteModal from "./Modal/ArchievedNoteModal"
+import AppBar from './AppBar/AppBar/AppBar'
+import NoteList from "./NoteCard/NoteList/NoteList"
+import CreateNoteModal from "./Modal/CreateNoteModal/CreateNoteModal"
+import ArchievedNoteModal from "./Modal/ArchievedNoteModal/ArchievedNoteModal"
 import getInitialData from "../data-resource/DATA"
 
 class NoteApp extends React.Component {
@@ -11,18 +11,17 @@ class NoteApp extends React.Component {
         super(props)
 
         this.state = {
-            masterData: getInitialData(),
             notes: getInitialData(),
             display: 'list',
             isCreateModalShown: false,
-            isArchievedModalShown: false
+            isArchievedModalShown: false,
+            searchKeyword: ''
         }
 
         this.onDisplayChange = this.onDisplayChange.bind(this)
         this.onCreateNoteClicked = this.onCreateNoteClicked.bind(this)
         this.onArchievedNoteClicked = this.onArchievedNoteClicked.bind(this)
         this.onSearchKeyPress = this.onSearchKeyPress.bind(this)
-        this.resetNotesData = this.resetNotesData.bind(this)
         this.onDeleteActionClicked = this.onDeleteActionClicked.bind(this)
         this.onSetPinnedActionClicked = this.onSetPinnedActionClicked.bind(this)
         this.onSetArchievedActionClicked = this.onSetArchievedActionClicked.bind(this)
@@ -59,21 +58,9 @@ class NoteApp extends React.Component {
     }
 
     onSearchKeyPress(keyword) {
-        this.resetNotesData()
-
-        this.setState(prevState => {
+        this.setState(() => {
             return {
-                ...prevState,
-                notes: prevState.notes.filter(note => note.title.toLowerCase().includes(keyword.toLowerCase()))
-            }
-        })
-    }
-
-    resetNotesData() {
-        this.setState(prevState => {
-            return {
-                ...prevState,
-                notes: this.state.masterData
+                searchKeyword: keyword
             }
         })
     }
@@ -81,7 +68,7 @@ class NoteApp extends React.Component {
     onCreateNoteSubmitted({title, body}) {
         this.setState(prevState => {
             const updatedNotes = [
-                ...prevState.masterData,
+                ...prevState.notes,
                 {
                     id: +new Date(),
                     title: title,
@@ -93,7 +80,6 @@ class NoteApp extends React.Component {
             ]
 
             return {
-                masterData: updatedNotes,
                 notes: updatedNotes,
                 isCreateModalShown: false
             }
@@ -111,8 +97,7 @@ class NoteApp extends React.Component {
 
         this.setState(() => {
             return {
-                notes: notes,
-                masterData: notes
+                notes: notes
             }
         })
     }
@@ -128,8 +113,7 @@ class NoteApp extends React.Component {
 
         this.setState(() => {
             return {
-                notes: notes,
-                masterData: notes
+                notes: notes
             }
         })
     }
@@ -142,14 +126,14 @@ class NoteApp extends React.Component {
 
             this.setState(() => {
                 return {
-                    notes: notes,
-                    masterData: notes
+                    notes: notes
                 }
             })
         }
     }
 
     render() {
+        const notes = this.state.notes.filter((note) => note.title.toLowerCase().includes(this.state.searchKeyword.toLowerCase()))
         const isCreateModalShown = this.state.isCreateModalShown ? <CreateNoteModal overlayClickHandler={this.onCreateNoteClicked} onCreateNoteSubmittedHandler={this.onCreateNoteSubmitted} /> : null
         const isArchievedModalShown = this.state.isArchievedModalShown ? <ArchievedNoteModal 
             overlayClickHandler={this.onArchievedNoteClicked} 
@@ -167,7 +151,7 @@ class NoteApp extends React.Component {
                     onSearchKeyPressHandler={this.onSearchKeyPress} />
                 <NoteList 
                     display={this.state.display} 
-                    notes={this.state.notes} 
+                    notes={notes} 
                     onDeleteActionHandler={this.onDeleteActionClicked} 
                     onSetPinnedActionHandler={this.onSetPinnedActionClicked}
                     onSetArchievedActionHandler={this.onSetArchievedActionClicked} />

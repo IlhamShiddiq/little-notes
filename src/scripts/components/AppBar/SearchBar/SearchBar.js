@@ -1,5 +1,7 @@
 import React from "react"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import './SearchBar.scss'
+
+import { FaSearch } from 'react-icons/fa'
 
 class SearchBar extends React.Component {
     constructor(props) {
@@ -19,7 +21,7 @@ class SearchBar extends React.Component {
                     <div className="form-inline-wrapper">
                         <div className="form-inline">
                             <button type="submit">
-                                <FontAwesomeIcon icon="fa-solid fa-magnifying-glass" />
+                                <FaSearch />
                             </button>
                         </div>
                         <div className="form-inline">

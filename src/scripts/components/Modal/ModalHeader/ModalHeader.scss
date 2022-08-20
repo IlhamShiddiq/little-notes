@@ -1,0 +1,48 @@
+@import './../../../../styles/variables';
+
+.modal-content__title {
+    position: relative;
+    background-color: $primary_color;
+    border-radius: 10px;
+    color: $white_color;
+    height: 110px;
+
+    h1 {
+        margin: 0;
+        font-size: 30px;
+        font-weight: lighter;
+        position: absolute;
+        right: 25px;
+        bottom: 10px;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .modal-content__title {
+        height: 70px !important;
+
+        h1 {
+            font-size: 16px !important;
+        }
+    }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+    .modal-content__title {
+        height: 70px !important;
+
+        h1 {
+            font-size: 16px !important;
+        }
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .modal-content__title {
+        height: 70px !important;
+
+        h1 {
+            font-size: 16px !important;
+        }
+    }
+}

@@ -1,4 +1,5 @@
 import React from "react"
+import './ButtonAction.scss'
 
 const ButtonAction = ({label, onClickHandler}) => {
     return (

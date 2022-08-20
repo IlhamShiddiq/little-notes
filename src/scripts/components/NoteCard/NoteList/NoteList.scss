@@ -1,0 +1,65 @@
+@import './../../../../styles/variables';
+
+.note-list {
+    width: 100%;
+    box-sizing: border-box;
+    
+    .note-list__body {
+        width: 959px;
+        margin: auto;
+        display: grid;
+    }
+
+    .list-display {
+        grid-template-columns: 1fr;
+    }
+    
+    .grid-display {
+        grid-template-columns: 1fr 1fr 1fr;
+        column-gap: 10px;
+    }
+
+    .pinned-note {
+        border: 2px solid #000000;
+    }
+
+    .pinned-button {
+        background-color: #BE374F !important;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .note-list {
+        .note-list__body {
+            width: 95% !important;
+        }
+    
+        .grid-display {
+            grid-template-columns: 1fr !important;
+        }
+    }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+    .note-list {
+        .note-list__body {
+            width: 95% !important;
+        }
+    
+        .grid-display {
+            grid-template-columns: 1fr !important;
+        }
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .note-list {
+        .note-list__body {
+            width: 95% !important;
+        }
+    
+        .grid-display {
+            grid-template-columns: 1fr 1fr !important;
+        }
+    }
+}

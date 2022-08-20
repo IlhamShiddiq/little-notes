@@ -1,4 +1,5 @@
 import React from "react"
+import './EmptyStateEntry.scss'
 
 const EmptyStateEntry = () => {
     return (
