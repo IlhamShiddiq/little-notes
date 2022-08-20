@@ -1,6 +1,8 @@
 import React from "react"
-import ModalHeader from "./ModalHeader"
-import ModalButtonClose from "./ModalButtonClose"
+import './CreateNoteModal.scss'
+
+import ModalHeader from "../ModalHeader/ModalHeader"
+import ModalButtonClose from "../ModalButtonClose/ModalButtonClose"
 
 class CreateNoteModal extends React.Component {
     constructor(props) {

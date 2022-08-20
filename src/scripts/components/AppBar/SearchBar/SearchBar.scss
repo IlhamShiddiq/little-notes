@@ -1,0 +1,86 @@
+@import './../../../../styles/variables';
+
+.search-bar {
+    position: absolute;
+    left: 0; bottom: -20px;
+    width: 100%;
+
+    form {
+        text-align: center;
+
+        .form-inline-wrapper {
+            display: inline-block;
+            border-radius: 50px;
+            box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.25);
+
+            .form-inline {
+                display: inline-block;
+
+                button {
+                    padding: 16px 20px;
+                    background-color: $white_color;
+                    border: 0px;
+                    border-top-left-radius: 50px;
+                    border-bottom-left-radius: 50px;
+                    cursor: pointer;
+                }
+
+                input {
+                    width: 657px;
+                    padding: 16px 0;
+                    background-color: $white_color;
+                    border: 0px;
+                    border-top-right-radius: 50px;
+                    border-bottom-right-radius: 50px;
+
+                    &:focus {
+                        border: 0;
+                        outline: none;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 575.98px) {
+    .search-bar {
+        form {
+            .form-inline-wrapper {
+                .form-inline {
+                    input {
+                        width: 280px !important;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+    .search-bar {
+        form {
+            .form-inline-wrapper {
+                .form-inline {
+                    input {
+                        width: 320px !important;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .search-bar {
+        form {
+            .form-inline-wrapper {
+                .form-inline {
+                    input {
+                        width: 400px !important;
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,7 +1,9 @@
 import React from "react"
-import ModalHeader from "./ModalHeader"
-import NoteList from "../NoteCard/NoteList"
-import ModalButtonClose from "./ModalButtonClose"
+import './ArchievedNoteModal.scss'
+
+import ModalHeader from "../ModalHeader/ModalHeader"
+import NoteList from "../../NoteCard/NoteList/NoteList"
+import ModalButtonClose from "../ModalButtonClose/ModalButtonClose"
 
 const ArchievedNoteModal = ({overlayClickHandler, notes, onSetArchievedActionHandler, onDeleteActionHandler}) => {
     const countData = notes.filter(note => note.isArchieved === true).length

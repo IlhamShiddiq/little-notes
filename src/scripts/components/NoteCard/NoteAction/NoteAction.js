@@ -1,4 +1,5 @@
 import React from "react"
+import './NoteAction.scss'
 
 const NoteAction = ({dataId, label, isPinned = false, onClickHandler}) => {
     return (

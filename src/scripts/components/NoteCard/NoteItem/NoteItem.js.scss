@@ -1,0 +1,55 @@
+.note-item {
+    .note-item__body {
+        position: relative;
+        background-color: #F1F1F1;
+        min-height: 10px;
+        border-radius: 10px;
+        padding: 15px 27px;
+        margin-bottom: 40px;
+
+        h1 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        p {
+            margin: 0;
+            font-size: 15px;
+        }
+
+        .note-item__info {
+            font-size: 12px;
+            color: #696969;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+
+        .note-item__action {
+            position: absolute;
+            left: 27px;
+            bottom: -17px;
+        }
+    }
+}
+
+@media (max-width: 575.98px) {
+    .note-item {
+        .note-item__body {
+            padding: 15px 15px !important;
+            
+            h1 {
+                font-size: 16px !important;
+            }
+
+            p {
+                font-size: 13px !important;
+            }
+
+            .note-item__info {
+                font-size: 11px !important;
+            }
+        }
+    }
+}
