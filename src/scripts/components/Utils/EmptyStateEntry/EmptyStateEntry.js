@@ -4,7 +4,7 @@ import './EmptyStateEntry.scss'
 const EmptyStateEntry = () => {
     return (
         <div className="empty-state-entry">
-            <p>No Data Entry</p>
+            <img src="images/EmptyStateIllustration.svg" alt="Illustration"/>
         </div>
     )
 }
