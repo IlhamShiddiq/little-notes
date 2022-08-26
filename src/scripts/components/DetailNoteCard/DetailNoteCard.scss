@@ -1,0 +1,44 @@
+@import './../../../styles/variables';
+
+.note-detail {
+    width: 100%;
+    box-sizing: border-box;
+    
+    .note-detail__body {
+        width: 959px;
+        margin: auto;
+        background-color: #F1F1F1;
+        padding: 15px 27px;
+        box-sizing: border-box;
+        border-radius: 10px;
+        margin-top: -20px;
+
+        p {
+            font-size: 15px;
+        }
+    }
+}
+
+@media (max-width: 575.98px) {
+    .note-detail {
+        .note-detail__body {
+            width: 95% !important;
+        }
+    }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+    .note-detail {
+        .note-detail__body {
+            width: 95% !important;
+        }
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .note-detail {
+        .note-detail__body {
+            width: 95% !important;
+        }
+    }
+}

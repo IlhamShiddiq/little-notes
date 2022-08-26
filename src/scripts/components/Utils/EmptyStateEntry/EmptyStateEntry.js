@@ -4,7 +4,7 @@ import './EmptyStateEntry.scss'
 const EmptyStateEntry = () => {
     return (
         <div className="empty-state-entry">
-            <img src="images/EmptyStateIllustration.svg" alt="Illustration"/>
+            <img src={`${process.env.REACT_APP_BASE_URL}/images/EmptyStateIllustration.svg`} alt="Illustration"/>
         </div>
     )
 }

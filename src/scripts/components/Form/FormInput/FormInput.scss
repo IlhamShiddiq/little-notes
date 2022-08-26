@@ -1,0 +1,96 @@
+.form-input {
+    width: 100%;
+
+    .form-input__wrapper {
+        margin: auto;
+        width: 850px;
+        background-color: #F1F1F1;
+        border-radius: 10px;
+        padding: 20px 25px;
+        box-sizing: border-box;
+
+        .form-input__display {
+            display: block;
+            margin: 15px 5px;
+            width: 100%;
+
+            .form-input__label {
+                font-size: 14px;
+                display: inline-block;
+            }
+
+            .form-input__fillable {
+                border: 2px solid #B5B5B5;
+            }
+
+            .form-input__nonfillable {
+                border: 2px solid #BE374F;
+            }
+            
+            input, textarea, button {
+                box-sizing: border-box;
+                width: 100%;
+                padding: 15px;
+                border-radius: 10px;
+                font-size: 16px;
+            }
+
+            input {
+                &:focus {
+                    outline: none;
+                }
+            }
+
+            button {
+                margin-top: 15px;
+                background-color: #BE374F;
+                color: white;
+                border: none;
+                cursor: pointer;
+            }
+        }
+
+        .text-editor {
+            background-color: white;
+            padding: 15px;
+            min-height: 300px;
+            border-radius: 10px;
+        }
+    }
+}
+
+@media (max-width: 575.98px) {
+    .form-input {
+        .form-input__wrapper {
+            width: 100%;
+
+            .text-editor {
+                min-height: 400px;
+            }
+        }
+    }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+    .form-input {
+        .form-input__wrapper {
+            width: 100%;
+
+            .text-editor {
+                min-height: 400px;
+            }
+        }
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .form-input {
+        .form-input__wrapper {
+            width: 700px;
+
+            .text-editor {
+                min-height: 350px;
+            }
+        }
+    }
+}
