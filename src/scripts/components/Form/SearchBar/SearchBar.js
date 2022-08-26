@@ -1,9 +1,10 @@
 import React from "react"
 import './SearchBar.scss'
 
+import PropTypes from 'prop-types'
 import { FaSearch } from 'react-icons/fa'
 
-const SearchBar = ({ onSearchKeyPressHandler }) => {
+const SearchBar = ({ keyword, onSearchKeyPressHandler }) => {
     const onSearchKeyPress = event => {
         onSearchKeyPressHandler(event.target.value)
     }
@@ -18,12 +19,17 @@ const SearchBar = ({ onSearchKeyPressHandler }) => {
                         </button>
                     </div>
                     <div className="form-inline">
-                        <input type="text" placeholder="search your note here" onChange={onSearchKeyPress} />
+                        <input type="text" placeholder="search your note here" value={keyword} onChange={onSearchKeyPress} />
                     </div>
                 </div>
             </form>
         </div>
     )
+}
+
+SearchBar.propTypes = {
+    keyword: PropTypes.string.isRequired,
+    onSearchKeyPressHandler: PropTypes.func.isRequired
 }
 
 export default SearchBar

@@ -1,27 +1,48 @@
 import React from "react"
 import './NoteList.scss'
 
+import PropTypes from 'prop-types'
 import NoteItem from "../NoteItem/NoteItem"
 import EmptyStateEntry from "../../Utils/EmptyStateEntry/EmptyStateEntry"
+import CardItemActiveNote from "scripts/components/ButtonActionGroup/ActiveNotePage/CardItemActiveNote"
+import CardItemArchivedNote from "scripts/components/ButtonActionGroup/ArchiveNotePage/CardItemArchivedNote"
 
-const NoteList = ({display, isArchieved = false, notes, onDeleteActionHandler, onSetPinnedActionHandler, onSetArchievedActionHandler}) => {
-    const displayClass = `note-list__body ${display}-display ${isArchieved ? 'full-width' : ''}`;
-    const noteEntries = notes.filter(note => note.isArchieved === isArchieved)
+const NoteList = ({
+    display, 
+    isArchieved = false, 
+    notes, 
+    onDeleteActionHandler, 
+    onSetPinnedActionHandler, 
+    onSetUnpinnedActionClicked, 
+    onSetArchievedActionHandler, 
+    onSetUnarchieveActionHandler
+}) => {
+    const displayClass = `note-list__body ${display}-display`
 
     return (
         <div className="note-list">
             {
-                noteEntries.length > 0 ? (
+                notes.length > 0 ? (
                     <div className={displayClass}>
                         {
-                            noteEntries.map(note => (
+                            notes.map(note => (
                                 <NoteItem 
                                     key={note.id} 
-                                    isArchieved={isArchieved} 
                                     {...note} 
-                                    onDeleteActionHandler={onDeleteActionHandler} 
-                                    onSetPinnedActionHandler={onSetPinnedActionHandler} 
-                                    onSetArchievedActionHandler={onSetArchievedActionHandler}
+                                    buttonAction={
+                                        isArchieved ? 
+                                            <CardItemArchivedNote 
+                                                {...note}
+                                                onSetUnarchieveActionHandler={onSetUnarchieveActionHandler}
+                                                onDeleteActionHandler={onDeleteActionHandler}
+                                            /> : <CardItemActiveNote 
+                                                {...note}
+                                                onDeleteActionHandler={onDeleteActionHandler}
+                                                onSetPinnedActionHandler={onSetPinnedActionHandler}
+                                                onSetUnpinnedActionClicked={onSetUnpinnedActionClicked}
+                                                onSetArchievedActionHandler={onSetArchievedActionHandler}
+                                            />
+                                    }
                                 />
                             ))
                         }
@@ -30,6 +51,17 @@ const NoteList = ({display, isArchieved = false, notes, onDeleteActionHandler, o
             }
         </div>
     )
+}
+
+NoteList.propTypes = {
+    display: PropTypes.string.isRequired,
+    isArchieved: PropTypes.bool,
+    notes: PropTypes.array.isRequired,
+    onDeleteActionHandler: PropTypes.func.isRequired,
+    onSetPinnedActionHandler: PropTypes.func,
+    onSetUnpinnedActionClicked: PropTypes.func,
+    onSetArchievedActionHandler: PropTypes.func,
+    onSetUnarchieveActionHandler: PropTypes.func,
 }
 
 export default NoteList
