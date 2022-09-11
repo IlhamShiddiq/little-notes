@@ -1,127 +1,118 @@
-import React from "react"
+import React, { useState, useEffect, Fragment } from "react"
 
-import { getActiveNotes, addNote, archiveNote, pinNote, unpinNote, deleteNote } from "scripts/services/NoteService"
-import autoBind from "auto-bind"
+import { getActiveNotes, archiveNote, pinNote, unpinNote, deleteNote } from "scripts/services/NoteService"
+import { useSearchParams } from "react-router-dom"
+import { confirmAlert } from "react-confirm-alert"
+import { toast } from 'react-toastify'
+import 'react-confirm-alert/src/react-confirm-alert.css'
 
 import AppBar from '../components/AppBar/AppBar/AppBar'
 import NoteList from "../components/NoteCard/NoteList/NoteList"
 import AppBarActiveNote from "scripts/components/ButtonActionGroup/ActiveNotePage/AppBarActiveNote"
 import SearchBar from "scripts/components/Form/SearchBar/SearchBar"
-import { useSearchParams } from "react-router-dom"
+import CustomConfirmationDialog from "scripts/components/CustomAlert/CustomConfirmationDialog/CustomConfirmationDialog"
 
-const ActiveNotePageWrapper = () => {
+const ActiveNotePage = () => {
     const [searchParams, setSearchParams] = useSearchParams()
     const keyword = searchParams.get('keyword')
 
-    const changeSearchParams = keyword => {
-      setSearchParams({ keyword });
+    const [notes, setNotes] = useState(getActiveNotes())
+    const [display, setDisplay] = useState('list')
+    const [searchKeyword, setSearchKeyword] = useState(keyword ||  '')
+
+    const headline = {
+        title: 'LittleNotes',
+        subTitle: 'never forget anything'
+    }
+
+    useEffect(() => {
+        const searchedNotes = () => {
+            const activeNotes = getActiveNotes()
+            setNotes(() => activeNotes.filter((note) => note.title.toLowerCase().includes(searchKeyword.toLowerCase())))
+        }
+
+        searchedNotes()
+    }, [searchKeyword])
+
+    const getLatestNotes = () => {
+        setNotes(getActiveNotes())
+    }
+
+    const onDisplayChange = () => {
+        setDisplay((prevDisplay => {
+            return prevDisplay === 'list' ? 'grid' : 'list'
+        }))
+    }
+
+    const onSearchKeyPress = (keyword) => {
+        setSearchKeyword(keyword)
+        setSearchParams({keyword})
+    }
+
+    const onSetPinnedActionClicked = (id) => {
+        pinNote(id)
+        getLatestNotes()
+    }
+
+    const onSetUnpinnedActionClicked = (id) => {
+        unpinNote(id)
+        getLatestNotes()
+    }
+
+    const onSetArchievedActionClicked = (id) => {
+        confirmAlert({
+            overlayClassName: 'confirmation-alert-overlay-light',
+            customUI: ({ onClose }) => {
+                return <CustomConfirmationDialog 
+                    message='Are you sure want to archive this note?'
+                    onClose={onClose} 
+                    onClickDeleteAccepted={() => {
+                        archiveNote(id)
+                        getLatestNotes()
+                        onClose()
+                        toast.success('Note archived successfully!');
+                    }} />
+            },
+        });
+    }
+
+    const onDeleteActionClicked = (id) => {
+        confirmAlert({
+            overlayClassName: 'confirmation-alert-overlay-light',
+            customUI: ({ onClose }) => {
+                return <CustomConfirmationDialog 
+                    message='Are you sure want to delete this note?'
+                    onClose={onClose} 
+                    onClickDeleteAccepted={() => {
+                        deleteNote(id)
+                        getLatestNotes()
+                        onClose()
+                        toast.success('Note deleted successfully!');
+                    }} />
+            },
+        });
     }
 
     return (
-        <ActiveNotePage
-            defaultKeyword={keyword}
-            changeSearchParams={changeSearchParams} />
+        <Fragment>
+            <AppBar 
+                headline={headline}
+                searchBar={<SearchBar keyword={searchKeyword} onSearchKeyPressHandler={onSearchKeyPress} />}
+                barAction={
+                    <AppBarActiveNote
+                        display={display} 
+                        onDisplayChangeHandler={onDisplayChange} />
+                    } 
+                />
+            <NoteList 
+                display={display} 
+                notes={notes} 
+                onDeleteActionHandler={onDeleteActionClicked} 
+                onSetPinnedActionHandler={onSetPinnedActionClicked}
+                onSetUnpinnedActionClicked={onSetUnpinnedActionClicked}
+                onSetArchievedActionHandler={onSetArchievedActionClicked} />
+        </Fragment>
     )
 }
 
-class ActiveNotePage extends React.Component {
-    constructor(props) {
-        super(props)
-
-        this.state = {
-            notes: getActiveNotes(),
-            display: 'list',
-            searchKeyword: this.props.defaultKeyword ||  '',
-            headline: {
-                title: 'LittleNotes',
-                subTitle: 'never forget anything'
-            }
-        }
-
-        autoBind(this)
-    }
-
-    getLatestNotes() {
-        this.setState(() => {
-            return {
-                notes: getActiveNotes()
-            }
-        })
-    }
-
-    onDisplayChange() {
-        this.setState(prevState => {
-            const latestDisplay = prevState.display === 'list' ? 'grid' : 'list'
-
-            return {
-                display: latestDisplay
-            }
-        })
-    }
-
-    onSearchKeyPress(keyword) {
-        this.setState(() => {
-            return {
-                searchKeyword: keyword
-            }
-        })
-
-        this.props.changeSearchParams(keyword)
-    }
-
-    onCreateNoteSubmitted({title, body}) {
-        addNote({title, body})
-        this.getLatestNotes()
-    }
-
-    onSetPinnedActionClicked(id) {
-        pinNote(id)
-        this.getLatestNotes()
-    }
-
-    onSetUnpinnedActionClicked(id) {
-        unpinNote(id)
-        this.getLatestNotes()
-    }
-
-    onSetArchievedActionClicked(id) {
-        archiveNote(id)
-        this.getLatestNotes()
-    }
-
-    onDeleteActionClicked(id) {
-        const is_allowed = window.confirm('Are you sure want to delete this data?')
-
-        if (is_allowed) {
-            deleteNote(id)
-            this.getLatestNotes()
-        }
-    }
-
-    render() {
-        const notes = this.state.notes.filter((note) => note.title.toLowerCase().includes(this.state.searchKeyword.toLowerCase()))
-        
-        return (
-            <React.Fragment>
-                <AppBar 
-                    headline={this.state.headline}
-                    searchBar={<SearchBar keyword={this.state.searchKeyword} onSearchKeyPressHandler={this.onSearchKeyPress} />}
-                    barAction={
-                        <AppBarActiveNote
-                            display={this.state.display} 
-                            onDisplayChangeHandler={this.onDisplayChange} />
-                        } 
-                    />
-                <NoteList 
-                    display={this.state.display} 
-                    notes={notes} 
-                    onDeleteActionHandler={this.onDeleteActionClicked} 
-                    onSetPinnedActionHandler={this.onSetPinnedActionClicked}
-                    onSetUnpinnedActionClicked={this.onSetUnpinnedActionClicked}
-                    onSetArchievedActionHandler={this.onSetArchievedActionClicked} />
-            </React.Fragment>
-        )
-    }
-}
-
-export default ActiveNotePageWrapper;
+export default ActiveNotePage;

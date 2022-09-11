@@ -1,37 +1,27 @@
-import React from "react"
+import React, { Fragment, useState } from "react"
 import './FormInput.scss'
 
 import PropTypes from 'prop-types'
-import autoBind from "auto-bind"
 import { EditorState } from "draft-js";
 import { convertToHTML } from "draft-convert";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
-class FormInput extends React.Component {
-    constructor(props) {
-        super(props)
+const FormInput = ({propTitle, propBody, propOnFormSubmit}) => {
+    const [title, setTitle] = useState(propTitle || '')
+    const [editorState, setEditorState] = useState(propBody || EditorState.createEmpty())
+    const [limitChar, setLimitChar] = useState(propTitle ? propTitle.length : 0)
+    const [titleInputStyle, setTitleInputStyle] = useState('form-input__fillable')
+    const [bodyInputStyle, setBodyInputStyle] = useState('form-input__fillable')
 
-        this.state = {
-            title: this.props.title || '',
-            editorState: this.props.body || EditorState.createEmpty(),
-            limitChar: this.props.title ? this.props.title.length : 0,
-            titleInputStyle: 'form-input__fillable',
-            bodyInputStyle: 'form-input__fillable',
-        }
-
-        autoBind(this)
-    }
-
-    onEditorStateChange = (editorState) => {
+    const onEditorStateChange = (editorState) => {
         const convertedContent = convertToHTML(editorState.getCurrentContent())
-        this.setState({
-            editorState,
-            bodyInputStyle: (convertedContent.length >= 7) ? 'form-input__fillable' : ''
-        })
+
+        setEditorState(editorState)
+        setBodyInputStyle((convertedContent.length >= 7) ? 'form-input__fillable' : '')
     }
 
-    onTitleInputChange = event => {
+    const onTitleInputChange = (event) => {
         let [title, titleInputStyle] = [event.target.value, 'form-input__fillable']
 
         if (title.length > 50) {
@@ -39,71 +29,56 @@ class FormInput extends React.Component {
             titleInputStyle = 'form-input__nonfillable'
         }
 
-        this.setState(() => {
-            return {
-                title: title,
-                limitChar: title.length,
-                titleInputStyle
-            }
-        })
+        setTitle(title)
+        setLimitChar(title.length)
+        setTitleInputStyle(titleInputStyle)
     }
 
-    onFormSubmit = event => {
+    const onFormSubmit = event => {
         event.preventDefault()
 
-        const [title, body] = [this.state.title, convertToHTML(this.state.editorState.getCurrentContent())]
+        const body = convertToHTML(editorState.getCurrentContent())
 
-        if (!title.length) this.setState(() => {
-            return {
-                titleInputStyle: 'form-input__nonfillable'
-            }
-        })
-
-        if (!(body.length - 7)) this.setState(() => {
-            return {
-                bodyInputStyle: 'form-input__nonfillable'
-            }
-        })
+        if (!title.length) setTitleInputStyle('form-input__nonfillable')
+        if (!(body.length - 7)) setBodyInputStyle('form-input__nonfillable')
 
         if (title && (body.length - 7)) {
-            this.props.onFormSubmit({
-                title: this.state.title,
-                body: convertToHTML(this.state.editorState.getCurrentContent())
+            propOnFormSubmit({
+                title,
+                body: convertToHTML(editorState.getCurrentContent())
             })
         }
     }
 
-    render() {
-        return (
-            <React.Fragment>
-                <div className="form-input">
-                    <div className="form-input__wrapper">
-                        <form onSubmit={this.onFormSubmit}>
-                            <div className="form-input__display">
-                                <label className="form-input__label full-width text-right">Limit {this.state.limitChar}/50</label>
-                                <input className={this.state.titleInputStyle} type='text' placeholder="note's title/subject" onChange={this.onTitleInputChange} value={this.state.title} />
+    return (
+        <Fragment>
+            <div className="form-input">
+                <div className="form-input__wrapper">
+                    <form onSubmit={onFormSubmit}>
+                        <div className="form-input__display">
+                            <label className="form-input__label full-width text-right">Limit {limitChar}/50</label>
+                            <input className={titleInputStyle} type='text' placeholder="note's title/subject" onChange={onTitleInputChange} value={title} />
+                        </div>
+                        <div className="form-input__display">
+                            <div className={`text-editor ${bodyInputStyle}`}>
+                            <Editor
+                                editorState={editorState}
+                                toolbarClassName="toolbarClassName"
+                                wrapperClassName="wrapperClassName"
+                                editorClassName="editorClassName"
+                                onEditorStateChange={onEditorStateChange}
+                                placeholder="your note's description"
+                                />
                             </div>
-                            <div className="form-input__display">
-                                <div className={`text-editor ${this.state.bodyInputStyle}`}>
-                                <Editor
-                                    editorState={this.state.editorState}
-                                    toolbarClassName="toolbarClassName"
-                                    wrapperClassName="wrapperClassName"
-                                    editorClassName="editorClassName"
-                                    onEditorStateChange={this.onEditorStateChange}
-                                    placeholder="your note's description"
-                                    />
-                                </div>
-                            </div>
-                            <div className="form-input__display">
-                                <button>Submit</button>
-                            </div>
-                        </form>
-                    </div>
+                        </div>
+                        <div className="form-input__display">
+                            <button>Submit</button>
+                        </div>
+                    </form>
                 </div>
-            </React.Fragment>
-        )
-    }
+            </div>
+        </Fragment>
+    )
 }
 
 FormInput.propTypes = {

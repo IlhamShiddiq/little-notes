@@ -1,7 +1,8 @@
-import React from "react"
+import React, { Fragment } from "react"
 
 import { addNote } from "scripts/services/NoteService"
 import { useNavigate } from "react-router-dom"
+import { toast } from 'react-toastify'
 
 import AppBar from "scripts/components/AppBar/AppBar/AppBar"
 import AppBarAddNote from "scripts/components/ButtonActionGroup/AddNotePage/AppBarAddNote"
@@ -18,6 +19,7 @@ const setHeadline = () => {
 
 const submitData = ({title, body}) => {
     addNote({title, body})
+    toast.success('Note added successfully!');
 }
 
 const AddNotePage = () => {
@@ -29,12 +31,12 @@ const AddNotePage = () => {
     }
 
     return (
-        <React.Fragment>
+        <Fragment>
             <AppBar
                 headline={setHeadline()}
                 barAction={<AppBarAddNote />} />
-            <FormInput onFormSubmit={onFormSubmit} />
-        </React.Fragment>
+            <FormInput propOnFormSubmit={onFormSubmit} />
+        </Fragment>
     )
 }
 

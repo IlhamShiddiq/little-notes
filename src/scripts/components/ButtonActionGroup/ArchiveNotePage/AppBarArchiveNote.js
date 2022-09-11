@@ -1,4 +1,4 @@
-import React from "react"
+import React, { Fragment } from "react"
 
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
@@ -8,13 +8,13 @@ import { FiArrowLeft } from "react-icons/fi"
 
 const AppBarArchiveNote = ({display, onDisplayChangeHandler}) => {
     return (
-        <React.Fragment>
+        <Fragment>
             <Link to="/">
                 <ButtonAction label={<FiArrowLeft size={50} />} />
             </Link>
 
             <ButtonAction label={display === 'list' ? <FiGrid size={50} /> : <FiList size={50} />} onClickHandler={onDisplayChangeHandler} />
-        </React.Fragment>
+        </Fragment>
     )
 }
 

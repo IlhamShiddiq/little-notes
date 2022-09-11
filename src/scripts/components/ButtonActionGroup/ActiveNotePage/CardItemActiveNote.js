@@ -1,4 +1,4 @@
-import React from "react"
+import React, { Fragment } from "react"
 
 import PropTypes from 'prop-types'
 import NoteAction from "scripts/components/NoteCard/NoteAction/NoteAction"
@@ -8,7 +8,7 @@ import { FaTrash, FaArchive, FaEye, FaPen } from 'react-icons/fa'
 
 const CardItemActiveNote = ({id, isPinned, onDeleteActionHandler, onSetPinnedActionHandler, onSetUnpinnedActionClicked, onSetArchievedActionHandler}) => {
     return (
-        <React.Fragment>
+        <Fragment>
             <NoteAction 
                 label={<ImPushpin size={15} color="white" />} 
                 onClickHandler={isPinned ? onSetUnpinnedActionClicked : onSetPinnedActionHandler}  
@@ -25,7 +25,7 @@ const CardItemActiveNote = ({id, isPinned, onDeleteActionHandler, onSetPinnedAct
             
             <NoteAction label={<FaArchive size={15} />} onClickHandler={onSetArchievedActionHandler} dataId={id} />
             <NoteAction label={<FaTrash size={15} />} onClickHandler={onDeleteActionHandler} dataId={id} />
-        </React.Fragment>
+        </Fragment>
     )
 }
 
