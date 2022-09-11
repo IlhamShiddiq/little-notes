@@ -1,12 +1,16 @@
 import React, {useState, useEffect, Fragment} from "react"
 
 import { getArchivedNotes, unarchiveNote, deleteNote } from "scripts/services/NoteService"
+import { confirmAlert } from "react-confirm-alert"
+import { toast } from 'react-toastify'
+import 'react-confirm-alert/src/react-confirm-alert.css'
 
 import AppBar from '../components/AppBar/AppBar/AppBar'
 import AppBarArchiveNote from "scripts/components/ButtonActionGroup/ArchiveNotePage/AppBarArchiveNote"
 import SearchBar from "scripts/components/Form/SearchBar/SearchBar"
 import NoteList from "../components/NoteCard/NoteList/NoteList"
 import { useSearchParams } from "react-router-dom"
+import CustomConfirmationDialog from "scripts/components/CustomAlert/CustomConfirmationDialog/CustomConfirmationDialog"
 
 const ArchivedNotePage = () => {
     const [searchParams, setSearchParams] = useSearchParams()
@@ -46,17 +50,37 @@ const ArchivedNotePage = () => {
     }
 
     const onSetUnarchieveActionClicked = (id) => {
-        unarchiveNote(id)
-        getLatestNotes()
+        confirmAlert({
+            overlayClassName: 'confirmation-alert-overlay-light',
+            customUI: ({ onClose }) => {
+                return <CustomConfirmationDialog 
+                    message='Are you sure want to unarchive this note?'
+                    onClose={onClose} 
+                    onClickDeleteAccepted={() => {
+                        unarchiveNote(id)
+                        getLatestNotes()
+                        onClose()
+                        toast.success('Note unarchived successfully!');
+                    }} />
+            },
+        });
     }
 
     const onDeleteActionClicked = (id) => {
-        const is_allowed = window.confirm('Are you sure want to delete this data?')
-
-        if (is_allowed) {
-            deleteNote(id)
-            getLatestNotes()
-        }
+        confirmAlert({
+            overlayClassName: 'confirmation-alert-overlay-light',
+            customUI: ({ onClose }) => {
+                return <CustomConfirmationDialog 
+                    message='Are you sure want to delete this note?'
+                    onClose={onClose} 
+                    onClickDeleteAccepted={() => {
+                        deleteNote(id)
+                        getLatestNotes()
+                        onClose()
+                        toast.success('Note deleted successfully!');
+                    }} />
+            },
+        });
     }
 
     return (

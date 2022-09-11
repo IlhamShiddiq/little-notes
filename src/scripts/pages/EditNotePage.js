@@ -2,6 +2,7 @@ import React, { Fragment } from "react";
 
 import { useParams, useNavigate } from "react-router-dom"
 import { editNote, getNote } from "scripts/services/NoteService"
+import { toast } from 'react-toastify'
 
 import AppBar from "scripts/components/AppBar/AppBar/AppBar"
 import AppBarAddNote from "scripts/components/ButtonActionGroup/AddNotePage/AppBarAddNote"
@@ -24,6 +25,7 @@ const getDetail = (id) => {
 
 const edtData = (id, title, body) => {
     editNote({id, title, body})
+    toast.success('Note edited successfully!');
 }
 
 const setBodyContent = body => {
