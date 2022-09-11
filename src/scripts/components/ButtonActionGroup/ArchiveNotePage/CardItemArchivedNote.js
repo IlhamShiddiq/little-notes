@@ -1,4 +1,4 @@
-import React from "react"
+import React, { Fragment } from "react"
 
 import PropTypes from 'prop-types'
 import NoteAction from "scripts/components/NoteCard/NoteAction/NoteAction"
@@ -7,14 +7,14 @@ import { FaTrash, FaEye, FaUndo } from 'react-icons/fa'
 
 const CardItemArchivedNote = ({id, onSetUnarchieveActionHandler, onDeleteActionHandler}) => {
     return (
-        <React.Fragment>
+        <Fragment>
             <Link to={`/detail/${id}`}>
                 <NoteAction label={<FaEye size={15} />} />
             </Link>
 
             <NoteAction label={<FaUndo size={15} />} onClickHandler={onSetUnarchieveActionHandler} dataId={id} />
             <NoteAction label={<FaTrash size={15} />} onClickHandler={onDeleteActionHandler} dataId={id} />
-        </React.Fragment>
+        </Fragment>
     )
 }
 

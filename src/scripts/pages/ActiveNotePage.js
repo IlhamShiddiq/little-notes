@@ -1,7 +1,6 @@
-import React from "react"
+import React, { useState, useEffect, Fragment } from "react"
 
-import { getActiveNotes, addNote, archiveNote, pinNote, unpinNote, deleteNote } from "scripts/services/NoteService"
-import autoBind from "auto-bind"
+import { getActiveNotes, archiveNote, pinNote, unpinNote, deleteNote } from "scripts/services/NoteService"
 
 import AppBar from '../components/AppBar/AppBar/AppBar'
 import NoteList from "../components/NoteCard/NoteList/NoteList"
@@ -9,119 +8,87 @@ import AppBarActiveNote from "scripts/components/ButtonActionGroup/ActiveNotePag
 import SearchBar from "scripts/components/Form/SearchBar/SearchBar"
 import { useSearchParams } from "react-router-dom"
 
-const ActiveNotePageWrapper = () => {
+const ActiveNotePage = () => {
     const [searchParams, setSearchParams] = useSearchParams()
     const keyword = searchParams.get('keyword')
 
-    const changeSearchParams = keyword => {
-      setSearchParams({ keyword });
+    const [notes, setNotes] = useState(getActiveNotes())
+    const [display, setDisplay] = useState('list')
+    const [searchKeyword, setSearchKeyword] = useState(keyword ||  '')
+
+    const headline = {
+        title: 'LittleNotes',
+        subTitle: 'never forget anything'
     }
 
-    return (
-        <ActiveNotePage
-            defaultKeyword={keyword}
-            changeSearchParams={changeSearchParams} />
-    )
-}
-
-class ActiveNotePage extends React.Component {
-    constructor(props) {
-        super(props)
-
-        this.state = {
-            notes: getActiveNotes(),
-            display: 'list',
-            searchKeyword: this.props.defaultKeyword ||  '',
-            headline: {
-                title: 'LittleNotes',
-                subTitle: 'never forget anything'
-            }
+    useEffect(() => {
+        const searchedNotes = () => {
+            const activeNotes = getActiveNotes()
+            setNotes(() => activeNotes.filter((note) => note.title.toLowerCase().includes(searchKeyword.toLowerCase())))
         }
 
-        autoBind(this)
+        searchedNotes()
+    }, [searchKeyword])
+
+    const getLatestNotes = () => {
+        setNotes(getActiveNotes())
     }
 
-    getLatestNotes() {
-        this.setState(() => {
-            return {
-                notes: getActiveNotes()
-            }
-        })
+    const onDisplayChange = () => {
+        setDisplay((prevDisplay => {
+            return prevDisplay === 'list' ? 'grid' : 'list'
+        }))
     }
 
-    onDisplayChange() {
-        this.setState(prevState => {
-            const latestDisplay = prevState.display === 'list' ? 'grid' : 'list'
-
-            return {
-                display: latestDisplay
-            }
-        })
+    const onSearchKeyPress = (keyword) => {
+        setSearchKeyword(keyword)
+        setSearchParams({keyword})
     }
 
-    onSearchKeyPress(keyword) {
-        this.setState(() => {
-            return {
-                searchKeyword: keyword
-            }
-        })
-
-        this.props.changeSearchParams(keyword)
-    }
-
-    onCreateNoteSubmitted({title, body}) {
-        addNote({title, body})
-        this.getLatestNotes()
-    }
-
-    onSetPinnedActionClicked(id) {
+    const onSetPinnedActionClicked = (id) => {
         pinNote(id)
-        this.getLatestNotes()
+        getLatestNotes()
     }
 
-    onSetUnpinnedActionClicked(id) {
+    const onSetUnpinnedActionClicked = (id) => {
         unpinNote(id)
-        this.getLatestNotes()
+        getLatestNotes()
     }
 
-    onSetArchievedActionClicked(id) {
+    const onSetArchievedActionClicked = (id) => {
         archiveNote(id)
-        this.getLatestNotes()
+        getLatestNotes()
     }
 
-    onDeleteActionClicked(id) {
+    const onDeleteActionClicked = (id) => {
         const is_allowed = window.confirm('Are you sure want to delete this data?')
 
         if (is_allowed) {
             deleteNote(id)
-            this.getLatestNotes()
+            getLatestNotes()
         }
     }
 
-    render() {
-        const notes = this.state.notes.filter((note) => note.title.toLowerCase().includes(this.state.searchKeyword.toLowerCase()))
-        
-        return (
-            <React.Fragment>
-                <AppBar 
-                    headline={this.state.headline}
-                    searchBar={<SearchBar keyword={this.state.searchKeyword} onSearchKeyPressHandler={this.onSearchKeyPress} />}
-                    barAction={
-                        <AppBarActiveNote
-                            display={this.state.display} 
-                            onDisplayChangeHandler={this.onDisplayChange} />
-                        } 
-                    />
-                <NoteList 
-                    display={this.state.display} 
-                    notes={notes} 
-                    onDeleteActionHandler={this.onDeleteActionClicked} 
-                    onSetPinnedActionHandler={this.onSetPinnedActionClicked}
-                    onSetUnpinnedActionClicked={this.onSetUnpinnedActionClicked}
-                    onSetArchievedActionHandler={this.onSetArchievedActionClicked} />
-            </React.Fragment>
-        )
-    }
+    return (
+        <Fragment>
+            <AppBar 
+                headline={headline}
+                searchBar={<SearchBar keyword={searchKeyword} onSearchKeyPressHandler={onSearchKeyPress} />}
+                barAction={
+                    <AppBarActiveNote
+                        display={display} 
+                        onDisplayChangeHandler={onDisplayChange} />
+                    } 
+                />
+            <NoteList 
+                display={display} 
+                notes={notes} 
+                onDeleteActionHandler={onDeleteActionClicked} 
+                onSetPinnedActionHandler={onSetPinnedActionClicked}
+                onSetUnpinnedActionClicked={onSetUnpinnedActionClicked}
+                onSetArchievedActionHandler={onSetArchievedActionClicked} />
+        </Fragment>
+    )
 }
 
-export default ActiveNotePageWrapper;
+export default ActiveNotePage;

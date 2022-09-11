@@ -1,7 +1,6 @@
-import React from "react"
+import React, {useState, useEffect, Fragment} from "react"
 
 import { getArchivedNotes, unarchiveNote, deleteNote } from "scripts/services/NoteService"
-import autoBind from "auto-bind"
 
 import AppBar from '../components/AppBar/AppBar/AppBar'
 import AppBarArchiveNote from "scripts/components/ButtonActionGroup/ArchiveNotePage/AppBarArchiveNote"
@@ -9,103 +8,76 @@ import SearchBar from "scripts/components/Form/SearchBar/SearchBar"
 import NoteList from "../components/NoteCard/NoteList/NoteList"
 import { useSearchParams } from "react-router-dom"
 
-const ArchivedNotePageWrapper = () => {
+const ArchivedNotePage = () => {
     const [searchParams, setSearchParams] = useSearchParams()
     const keyword = searchParams.get('keyword')
 
-    const changeSearchParams = keyword => {
-      setSearchParams({ keyword });
+    const [notes, setNotes] = useState(getArchivedNotes())
+    const[display, setDisplay] = useState('list')
+    const [searchKeyword, setSearchKeyword] = useState(keyword ||  '')
+
+    const headline = {
+        title: 'LittleNotes',
+        subTitle: 'archived notes'
     }
 
-    return (
-        <ArchivedNotePage 
-            defaultKeyword={keyword}
-            changeSearchParams={changeSearchParams} />
-    )
-}
-
-class ArchivedNotePage extends React.Component {
-    constructor(props) {
-        super(props)
-
-        this.state = {
-            notes: getArchivedNotes(),
-            display: 'list',
-            searchKeyword: this.props.defaultKeyword ||  '',
-            headline: {
-                title: 'LittleNotes',
-                subTitle: 'archived notes'
-            }
+    useEffect(() => {
+        const searchedNotes = () => {
+            const archivedNotes = getArchivedNotes()
+            setNotes(() => archivedNotes.filter((note) => note.title.toLowerCase().includes(searchKeyword.toLowerCase())))
         }
 
-        autoBind(this)
+        searchedNotes()
+    }, [searchKeyword])
+
+    const getLatestNotes = () => {
+        setNotes(getArchivedNotes())
     }
 
-    getLatestNotes() {
-        this.setState(() => {
-            return {
-                notes: getArchivedNotes()
-            }
+    const onDisplayChange = () => {
+        setDisplay((prevDisplay) => {
+            return prevDisplay === 'list' ? 'grid' : 'list'
         })
     }
 
-    onDisplayChange() {
-        this.setState(prevState => {
-            const latestDisplay = prevState.display === 'list' ? 'grid' : 'list'
-
-            return {
-                display: latestDisplay
-            }
-        })
+    const onSearchKeyPress = (keyword) => {
+        setSearchKeyword(keyword)
+        setSearchParams({ keyword })
     }
 
-    onSearchKeyPress(keyword) {
-        this.setState(() => {
-            return {
-                searchKeyword: keyword
-            }
-        })
-
-        this.props.changeSearchParams(keyword)
-    }
-
-    onSetUnarchieveActionClicked(id) {
+    const onSetUnarchieveActionClicked = (id) => {
         unarchiveNote(id)
-        this.getLatestNotes()
+        getLatestNotes()
     }
 
-    onDeleteActionClicked(id) {
+    const onDeleteActionClicked = (id) => {
         const is_allowed = window.confirm('Are you sure want to delete this data?')
 
         if (is_allowed) {
             deleteNote(id)
-            this.getLatestNotes()
+            getLatestNotes()
         }
     }
 
-    render() {
-        const notes = this.state.notes.filter((note) => note.title.toLowerCase().includes(this.state.searchKeyword.toLowerCase()))
-
-        return (
-            <React.Fragment>
-                <AppBar 
-                    headline={this.state.headline}
-                    searchBar={<SearchBar keyword={this.state.searchKeyword} onSearchKeyPressHandler={this.onSearchKeyPress} />}
-                    barAction={
-                        <AppBarArchiveNote
-                            display={this.state.display} 
-                            onDisplayChangeHandler={this.onDisplayChange} />
-                        } 
-                    />
-                <NoteList 
-                    display={this.state.display} 
-                    isArchieved={true}
-                    notes={notes} 
-                    onSetUnarchieveActionHandler={this.onSetUnarchieveActionClicked}
-                    onDeleteActionHandler={this.onDeleteActionClicked} />
-            </React.Fragment>
-        )
-    }
+    return (
+        <Fragment>
+            <AppBar 
+                headline={headline}
+                searchBar={<SearchBar keyword={searchKeyword} onSearchKeyPressHandler={onSearchKeyPress} />}
+                barAction={
+                    <AppBarArchiveNote
+                        display={display} 
+                        onDisplayChangeHandler={onDisplayChange} />
+                    } 
+                />
+            <NoteList 
+                display={display} 
+                isArchieved={true}
+                notes={notes} 
+                onSetUnarchieveActionHandler={onSetUnarchieveActionClicked}
+                onDeleteActionHandler={onDeleteActionClicked} />
+        </Fragment>
+    )
 }
 
-export default ArchivedNotePageWrapper
+export default ArchivedNotePage

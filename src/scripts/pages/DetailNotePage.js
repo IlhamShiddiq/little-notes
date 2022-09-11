@@ -1,4 +1,4 @@
-import React from "react"
+import React, { Fragment } from "react"
 
 import { useParams, useNavigate } from "react-router-dom"
 import { FiCalendar } from "react-icons/fi"
@@ -26,7 +26,7 @@ const DetailNotePage = () => {
     const { id } = useParams()
     const note = getNote(Number(id))
     return (
-        <React.Fragment>
+        <Fragment>
             <AppBar 
                     headline={
                         note ? setHeadline(note.title, `${setLocalDate(note.createdAt)}`) : setHeadline()
@@ -39,7 +39,7 @@ const DetailNotePage = () => {
             {
                 note ? <DetailNoteCard body={note.body} /> : <NotFoundData />
             }
-        </React.Fragment>
+        </Fragment>
     )
 }
 

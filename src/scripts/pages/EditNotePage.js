@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 
 import { useParams, useNavigate } from "react-router-dom"
 import { editNote, getNote } from "scripts/services/NoteService"
@@ -44,15 +44,15 @@ const EditNotePage = () => {
     }
 
     return (
-        <React.Fragment>
+        <Fragment>
             <AppBar
                 headline={setHeadline()}
                 barAction={<AppBarAddNote />} />
             <FormInput
-                title={note.title}
-                body={setBodyContent(note.body)}
-                onFormSubmit={onFormSubmit} />
-        </React.Fragment>
+                propTitle={note.title}
+                propBody={setBodyContent(note.body)}
+                propOnFormSubmit={onFormSubmit} />
+        </Fragment>
     )
 }
 

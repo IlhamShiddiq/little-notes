@@ -1,4 +1,4 @@
-import React from "react"
+import React, { Fragment } from "react"
 
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
@@ -7,7 +7,7 @@ import { FiPlus, FiArchive, FiGrid, FiList } from "react-icons/fi"
 
 const AppBarActiveNote = ({display, onDisplayChangeHandler}) => {
     return (
-        <React.Fragment>
+        <Fragment>
             <Link to="/add">
                 <ButtonAction label={<FiPlus size={50} />} />
             </Link>
@@ -16,7 +16,7 @@ const AppBarActiveNote = ({display, onDisplayChangeHandler}) => {
             </Link>
 
             <ButtonAction label={display === 'list' ? <FiGrid size={50} /> : <FiList size={50} />} onClickHandler={onDisplayChangeHandler} />
-        </React.Fragment>
+        </Fragment>
     )
 }
 
