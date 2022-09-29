@@ -11,6 +11,7 @@ import SearchBar from "scripts/components/Form/SearchBar/SearchBar"
 import NoteList from "../components/NoteCard/NoteList/NoteList"
 import { useSearchParams } from "react-router-dom"
 import CustomConfirmationDialog from "scripts/components/CustomAlert/CustomConfirmationDialog/CustomConfirmationDialog"
+import ActionButtonGroup from "scripts/components/FloatingActionButton/ActionButtonGroup/ActionButtonGroup"
 
 const ArchivedNotePage = () => {
     const [searchParams, setSearchParams] = useSearchParams()
@@ -100,6 +101,7 @@ const ArchivedNotePage = () => {
                 notes={notes} 
                 onSetUnarchieveActionHandler={onSetUnarchieveActionClicked}
                 onDeleteActionHandler={onDeleteActionClicked} />
+            <ActionButtonGroup />
         </Fragment>
     )
 }

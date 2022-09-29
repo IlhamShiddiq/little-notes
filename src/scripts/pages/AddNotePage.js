@@ -7,6 +7,7 @@ import { toast } from 'react-toastify'
 import AppBar from "scripts/components/AppBar/AppBar/AppBar"
 import AppBarAddNote from "scripts/components/ButtonActionGroup/AddNotePage/AppBarAddNote"
 import FormInput from "scripts/components/Form/FormInput/FormInput"
+import ActionButtonGroup from "scripts/components/FloatingActionButton/ActionButtonGroup/ActionButtonGroup"
 import { FaPlus } from "react-icons/fa"
 
 const setHeadline = () => {
@@ -36,6 +37,7 @@ const AddNotePage = () => {
                 headline={setHeadline()}
                 barAction={<AppBarAddNote />} />
             <FormInput propOnFormSubmit={onFormSubmit} />
+            <ActionButtonGroup />
         </Fragment>
     )
 }

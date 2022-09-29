@@ -1,6 +1,8 @@
 import React from "react"
 
 import { Routes, Route } from 'react-router-dom'
+import LoginPage from "scripts/pages/LoginPage"
+import RegisterPage from "scripts/pages/RegisterPage"
 import ActiveNotePage from "scripts/pages/ActiveNotePage"
 import ArchivedNotePage from "scripts/pages/ArchivedNotePage"
 import AddNotePage from "scripts/pages/AddNotePage"
@@ -16,6 +18,9 @@ const NoteApp = () => {
             <Route path="/add" element={<AddNotePage />}></Route>
             <Route path="/detail/:id" element={<DetailNotePage />}></Route>
             <Route path="/edit/:id" element={<EditNotePage />}></Route>
+
+            <Route path="/login" element={<LoginPage />}></Route>
+            <Route path="/register" element={<RegisterPage />}></Route>
             <Route path="*" element={<NotFoundPage />}></Route>
         </Routes>
     )

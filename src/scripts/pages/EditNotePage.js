@@ -7,6 +7,7 @@ import { toast } from 'react-toastify'
 import AppBar from "scripts/components/AppBar/AppBar/AppBar"
 import AppBarAddNote from "scripts/components/ButtonActionGroup/AddNotePage/AppBarAddNote"
 import FormInput from "scripts/components/Form/FormInput/FormInput"
+import ActionButtonGroup from "scripts/components/FloatingActionButton/ActionButtonGroup/ActionButtonGroup"
 import htmlToDraft from 'html-to-draftjs'
 import { ContentState, EditorState } from "draft-js"
 import { FaPenAlt } from "react-icons/fa"
@@ -54,6 +55,7 @@ const EditNotePage = () => {
                 propTitle={note.title}
                 propBody={setBodyContent(note.body)}
                 propOnFormSubmit={onFormSubmit} />
+            <ActionButtonGroup />
         </Fragment>
     )
 }

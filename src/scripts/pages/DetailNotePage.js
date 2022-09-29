@@ -8,6 +8,7 @@ import AppBar from '../components/AppBar/AppBar/AppBar'
 import AppBarDetailNote from "scripts/components/ButtonActionGroup/DetailNotePage/AppBarDetailNote"
 import DetailNoteCard from "scripts/components/DetailNoteCard/DetailNoteCard"
 import NotFoundData from "scripts/components/Utils/NotFound/NotFoundData/NotFoundData"
+import ActionButtonGroup from "scripts/components/FloatingActionButton/ActionButtonGroup/ActionButtonGroup"
 
 const setHeadline = (title = 'NotFound', subTitle = 'notfound') => {
     return {
@@ -39,6 +40,7 @@ const DetailNotePage = () => {
             {
                 note ? <DetailNoteCard body={note.body} /> : <NotFoundData />
             }
+            <ActionButtonGroup />
         </Fragment>
     )
 }

@@ -11,6 +11,7 @@ import NoteList from "../components/NoteCard/NoteList/NoteList"
 import AppBarActiveNote from "scripts/components/ButtonActionGroup/ActiveNotePage/AppBarActiveNote"
 import SearchBar from "scripts/components/Form/SearchBar/SearchBar"
 import CustomConfirmationDialog from "scripts/components/CustomAlert/CustomConfirmationDialog/CustomConfirmationDialog"
+import ActionButtonGroup from "scripts/components/FloatingActionButton/ActionButtonGroup/ActionButtonGroup"
 
 const ActiveNotePage = () => {
     const [searchParams, setSearchParams] = useSearchParams()
@@ -111,6 +112,7 @@ const ActiveNotePage = () => {
                 onSetPinnedActionHandler={onSetPinnedActionClicked}
                 onSetUnpinnedActionClicked={onSetUnpinnedActionClicked}
                 onSetArchievedActionHandler={onSetArchievedActionClicked} />
+            <ActionButtonGroup />
         </Fragment>
     )
 }
