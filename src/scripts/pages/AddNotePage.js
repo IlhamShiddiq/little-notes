@@ -1,6 +1,6 @@
 import React, { Fragment } from "react"
 
-import { addNote } from "scripts/services/NoteService"
+import { addNote } from "scripts/data-resource/note/note-api"
 import { useNavigate } from "react-router-dom"
 import { toast } from 'react-toastify'
 
@@ -17,8 +17,8 @@ const setHeadline = () => {
     }
 }
 
-const submitData = ({title, body}) => {
-    addNote({title, body})
+const submitData = async ({title, body}) => {
+    await addNote({title, body})
     toast.success('Note added successfully!');
 }
 

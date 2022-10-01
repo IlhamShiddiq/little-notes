@@ -19,7 +19,7 @@ const CardItemArchivedNote = ({id, onSetUnarchieveActionHandler, onDeleteActionH
 }
 
 CardItemArchivedNote.propTypes = {
-    id: PropTypes.number.isRequired,
+    id: PropTypes.string.isRequired,
     onSetUnarchieveActionHandler: PropTypes.func.isRequired,
     onDeleteActionHandler: PropTypes.func.isRequired,
 }

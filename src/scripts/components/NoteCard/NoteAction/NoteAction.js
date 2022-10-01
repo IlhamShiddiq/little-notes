@@ -3,16 +3,15 @@ import './NoteAction.scss'
 
 import PropTypes from 'prop-types'
 
-const NoteAction = ({dataId, label, isPinned = false, onClickHandler = () => {}}) => {
+const NoteAction = ({dataId, label, onClickHandler = () => {}}) => {
     return (
-        <button className={`note-action ${isPinned ? 'pinned-button' : ''}`} onClick={() => onClickHandler(dataId)}>{label}</button>
+        <button className={`note-action`} onClick={() => onClickHandler(dataId)}>{label}</button>
     )
 }
 
 NoteAction.propTypes = {
-    dataId: PropTypes.number,
+    dataId: PropTypes.string,
     label: PropTypes.any.isRequired,
-    isPinned: PropTypes.bool,
     onClickHandler: PropTypes.func,
 }
 
