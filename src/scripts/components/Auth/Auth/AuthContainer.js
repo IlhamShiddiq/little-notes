@@ -5,7 +5,7 @@ import LoginForm from "../Login/LoginForm"
 import RegisterForm from "../RegisterForm/RegisterForm"
 import './AuthContainer.scss'
 
-const AuthContainer = ({propIsLoginDisplay}) => {
+const AuthContainer = ({propIsLoginDisplay, onLoginSuccess}) => {
     const isLoginDisplay = propIsLoginDisplay || false
 
     return (
@@ -16,7 +16,7 @@ const AuthContainer = ({propIsLoginDisplay}) => {
                 </div>
                 <div className="auth-container__form">
                     {
-                        isLoginDisplay ? <LoginForm /> : <RegisterForm />
+                        isLoginDisplay ? <LoginForm onLoginSuccess={onLoginSuccess} /> : <RegisterForm />
                     }
                 </div>
             </div>
@@ -25,7 +25,8 @@ const AuthContainer = ({propIsLoginDisplay}) => {
 }
 
 AuthContainer.propTypes = {
-    propIsLoginDisplay: PropTypes.bool.isRequired
+    propIsLoginDisplay: PropTypes.bool.isRequired,
+    onLoginSuccess: PropTypes.func
 }
 
 export default AuthContainer

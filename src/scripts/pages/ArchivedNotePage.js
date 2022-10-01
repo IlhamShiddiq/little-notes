@@ -1,6 +1,7 @@
-import React, {useState, useEffect, Fragment} from "react"
+import React, { useState, useEffect, Fragment } from "react"
 
-import { getArchivedNotes, unarchiveNote, deleteNote } from "scripts/services/NoteService"
+import { getArchivedNotes, unarchiveNote, deleteNote} from "scripts/data-resource/note/note-api"
+import { setStorageItem, getStorageItem } from "scripts/helpers/LocalStorage/LocalStorageHelper"
 import { confirmAlert } from "react-confirm-alert"
 import { toast } from 'react-toastify'
 import 'react-confirm-alert/src/react-confirm-alert.css'
@@ -11,15 +12,15 @@ import SearchBar from "scripts/components/Form/SearchBar/SearchBar"
 import NoteList from "../components/NoteCard/NoteList/NoteList"
 import { useSearchParams } from "react-router-dom"
 import CustomConfirmationDialog from "scripts/components/CustomAlert/CustomConfirmationDialog/CustomConfirmationDialog"
-import ActionButtonGroup from "scripts/components/FloatingActionButton/ActionButtonGroup/ActionButtonGroup"
 
 const ArchivedNotePage = () => {
     const [searchParams, setSearchParams] = useSearchParams()
     const keyword = searchParams.get('keyword')
 
-    const [notes, setNotes] = useState(getArchivedNotes())
-    const[display, setDisplay] = useState('list')
+    const [notes, setNotes] = useState([])
+    const [display, setDisplay] = useState(getStorageItem('archivedDisplay') || 'list')
     const [searchKeyword, setSearchKeyword] = useState(keyword ||  '')
+    const [isLoading, setIsLoading] = useState(true)
 
     const headline = {
         title: 'LittleNotes',
@@ -27,21 +28,40 @@ const ArchivedNotePage = () => {
     }
 
     useEffect(() => {
-        const searchedNotes = () => {
-            const archivedNotes = getArchivedNotes()
-            setNotes(() => archivedNotes.filter((note) => note.title.toLowerCase().includes(searchKeyword.toLowerCase())))
+        const getNotes = async () => {
+            await getArchivedNotes().then(notes => {
+                setNotes(notes.data)
+                setIsLoading(false)
+            })
+        }
+
+        getNotes()
+    }, [])
+
+    useEffect(() => {
+        const searchedNotes = async () => {
+            await getArchivedNotes().then(notes => {
+                setNotes(() => notes.data.filter((note) => note.title.toLowerCase().includes(searchKeyword.toLowerCase())))
+                setIsLoading(false)
+            })
+
         }
 
         searchedNotes()
     }, [searchKeyword])
 
-    const getLatestNotes = () => {
-        setNotes(getArchivedNotes())
+    const getLatestNotes = async () => {
+        await getArchivedNotes().then(notes => {
+            setNotes(notes.data)
+        })
     }
 
     const onDisplayChange = () => {
         setDisplay((prevDisplay) => {
-            return prevDisplay === 'list' ? 'grid' : 'list'
+            const display = (prevDisplay === 'list') ? 'grid' : 'list'
+            setStorageItem('archivedDisplay', display)
+
+            return display
         })
     }
 
@@ -56,10 +76,10 @@ const ArchivedNotePage = () => {
             customUI: ({ onClose }) => {
                 return <CustomConfirmationDialog 
                     message='Are you sure want to unarchive this note?'
-                    onClose={onClose} 
-                    onClickDeleteAccepted={() => {
-                        unarchiveNote(id)
-                        getLatestNotes()
+                    onClose={onClose}
+                    onClickAccepted={async () => {
+                        await unarchiveNote(id)
+                        await getLatestNotes()
                         onClose()
                         toast.success('Note unarchived successfully!');
                     }} />
@@ -73,10 +93,10 @@ const ArchivedNotePage = () => {
             customUI: ({ onClose }) => {
                 return <CustomConfirmationDialog 
                     message='Are you sure want to delete this note?'
-                    onClose={onClose} 
-                    onClickDeleteAccepted={() => {
-                        deleteNote(id)
-                        getLatestNotes()
+                    onClose={onClose}
+                    onClickAccepted={async () => {
+                        await deleteNote(id)
+                        await getLatestNotes()
                         onClose()
                         toast.success('Note deleted successfully!');
                     }} />
@@ -96,12 +116,12 @@ const ArchivedNotePage = () => {
                     } 
                 />
             <NoteList 
-                display={display} 
+                display={display}
+                isLoading={isLoading}
                 isArchieved={true}
                 notes={notes} 
                 onSetUnarchieveActionHandler={onSetUnarchieveActionClicked}
                 onDeleteActionHandler={onDeleteActionClicked} />
-            <ActionButtonGroup />
         </Fragment>
     )
 }

@@ -1,13 +1,12 @@
 import React, { Fragment } from "react"
 
-import { addNote } from "scripts/services/NoteService"
+import { addNote } from "scripts/data-resource/note/note-api"
 import { useNavigate } from "react-router-dom"
 import { toast } from 'react-toastify'
 
 import AppBar from "scripts/components/AppBar/AppBar/AppBar"
 import AppBarAddNote from "scripts/components/ButtonActionGroup/AddNotePage/AppBarAddNote"
 import FormInput from "scripts/components/Form/FormInput/FormInput"
-import ActionButtonGroup from "scripts/components/FloatingActionButton/ActionButtonGroup/ActionButtonGroup"
 import { FaPlus } from "react-icons/fa"
 
 const setHeadline = () => {
@@ -18,8 +17,8 @@ const setHeadline = () => {
     }
 }
 
-const submitData = ({title, body}) => {
-    addNote({title, body})
+const submitData = async ({title, body}) => {
+    await addNote({title, body})
     toast.success('Note added successfully!');
 }
 
@@ -37,7 +36,6 @@ const AddNotePage = () => {
                 headline={setHeadline()}
                 barAction={<AppBarAddNote />} />
             <FormInput propOnFormSubmit={onFormSubmit} />
-            <ActionButtonGroup />
         </Fragment>
     )
 }

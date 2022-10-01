@@ -3,24 +3,13 @@ import React, { Fragment } from "react"
 import PropTypes from 'prop-types'
 import NoteAction from "scripts/components/NoteCard/NoteAction/NoteAction"
 import { Link } from 'react-router-dom'
-import { ImPushpin } from 'react-icons/im'
-import { FaTrash, FaArchive, FaEye, FaPen } from 'react-icons/fa'
+import { FaTrash, FaArchive, FaEye } from 'react-icons/fa'
 
-const CardItemActiveNote = ({id, isPinned, onDeleteActionHandler, onSetPinnedActionHandler, onSetUnpinnedActionClicked, onSetArchievedActionHandler}) => {
+const CardItemActiveNote = ({id, onDeleteActionHandler, onSetArchievedActionHandler}) => {
     return (
         <Fragment>
-            <NoteAction 
-                label={<ImPushpin size={15} color="white" />} 
-                onClickHandler={isPinned ? onSetUnpinnedActionClicked : onSetPinnedActionHandler}  
-                dataId={id} 
-                isPinned={isPinned} />
-
             <Link to={`/detail/${id}`}>
                 <NoteAction label={<FaEye size={15} />} />
-            </Link>
-
-            <Link to={`/edit/${id}`}>
-                <NoteAction label={<FaPen size={15} />} />
             </Link>
             
             <NoteAction label={<FaArchive size={15} />} onClickHandler={onSetArchievedActionHandler} dataId={id} />
@@ -30,11 +19,8 @@ const CardItemActiveNote = ({id, isPinned, onDeleteActionHandler, onSetPinnedAct
 }
 
 CardItemActiveNote.propTypes = {
-    id: PropTypes.number.isRequired,
-    isPinned: PropTypes.bool.isRequired,
+    id: PropTypes.string.isRequired,
     onDeleteActionHandler: PropTypes.func.isRequired,
-    onSetPinnedActionHandler: PropTypes.func.isRequired,
-    onSetUnpinnedActionClicked: PropTypes.func.isRequired,
     onSetArchievedActionHandler: PropTypes.func.isRequired,
 }
 

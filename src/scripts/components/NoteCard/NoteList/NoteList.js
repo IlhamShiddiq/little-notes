@@ -6,9 +6,11 @@ import NoteItem from "../NoteItem/NoteItem"
 import EmptyStateEntry from "../../Utils/EmptyStateEntry/EmptyStateEntry"
 import CardItemActiveNote from "scripts/components/ButtonActionGroup/ActiveNotePage/CardItemActiveNote"
 import CardItemArchivedNote from "scripts/components/ButtonActionGroup/ArchiveNotePage/CardItemArchivedNote"
+import LoadingIndicator from "../../Utils/Loading/LoadingIndicator/LoadingIndicator"
 
 const NoteList = ({
-    display, 
+    display,
+    isLoading,
     isArchieved = false, 
     notes, 
     onDeleteActionHandler, 
@@ -22,32 +24,35 @@ const NoteList = ({
     return (
         <div className="note-list">
             {
-                notes.length > 0 ? (
-                    <div className={displayClass}>
-                        {
-                            notes.map(note => (
-                                <NoteItem 
-                                    key={note.id} 
-                                    {...note} 
-                                    buttonAction={
-                                        isArchieved ? 
-                                            <CardItemArchivedNote 
-                                                {...note}
-                                                onSetUnarchieveActionHandler={onSetUnarchieveActionHandler}
-                                                onDeleteActionHandler={onDeleteActionHandler}
-                                            /> : <CardItemActiveNote 
-                                                {...note}
-                                                onDeleteActionHandler={onDeleteActionHandler}
-                                                onSetPinnedActionHandler={onSetPinnedActionHandler}
-                                                onSetUnpinnedActionClicked={onSetUnpinnedActionClicked}
-                                                onSetArchievedActionHandler={onSetArchievedActionHandler}
-                                            />
-                                    }
-                                />
-                            ))
-                        }
-                    </div>
-                ) : <EmptyStateEntry />
+                isLoading ? <LoadingIndicator /> : (
+                    (notes.length > 0) ? (
+                        <div className={displayClass}>
+                            {
+                                notes.map(note => (
+                                    <NoteItem
+                                        key={note.id}
+                                        {...note}
+                                        isArchieved={note.archived}
+                                        buttonAction={
+                                            isArchieved ?
+                                                <CardItemArchivedNote
+                                                    {...note}
+                                                    onSetUnarchieveActionHandler={onSetUnarchieveActionHandler}
+                                                    onDeleteActionHandler={onDeleteActionHandler}
+                                                /> : <CardItemActiveNote
+                                                    {...note}
+                                                    onDeleteActionHandler={onDeleteActionHandler}
+                                                    onSetPinnedActionHandler={onSetPinnedActionHandler}
+                                                    onSetUnpinnedActionClicked={onSetUnpinnedActionClicked}
+                                                    onSetArchievedActionHandler={onSetArchievedActionHandler}
+                                                />
+                                        }
+                                    />
+                                ))
+                            }
+                        </div>
+                    ) : <EmptyStateEntry />
+                )
             }
         </div>
     )
@@ -55,6 +60,7 @@ const NoteList = ({
 
 NoteList.propTypes = {
     display: PropTypes.string.isRequired,
+    isLoading: PropTypes.bool.isRequired,
     isArchieved: PropTypes.bool,
     notes: PropTypes.array.isRequired,
     onDeleteActionHandler: PropTypes.func.isRequired,

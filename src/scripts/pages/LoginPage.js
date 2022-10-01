@@ -1,9 +1,9 @@
 import React from 'react'
 import AuthContainer from 'scripts/components/Auth/Auth/AuthContainer'
 
-const LoginPage = () => {
+const LoginPage = ({onLoginSuccess}) => {
     return (
-        <AuthContainer propIsLoginDisplay={true} />
+        <AuthContainer propIsLoginDisplay={true} onLoginSuccess={onLoginSuccess} />
     )
 }
 
