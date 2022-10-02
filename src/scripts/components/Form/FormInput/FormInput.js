@@ -1,13 +1,17 @@
-import React, { Fragment, useState } from "react"
-import './FormInput.scss'
+import React, {Fragment, useContext, useState } from "react"
 
 import PropTypes from 'prop-types'
-import { EditorState } from "draft-js";
-import { convertToHTML } from "draft-convert";
-import { Editor } from "react-draft-wysiwyg";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import { EditorState } from "draft-js"
+import { convertToHTML } from "draft-convert"
+import { Editor } from "react-draft-wysiwyg"
+import { CreateNotePageHeader } from "scripts/contents/page-header-content"
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css"
+import './FormInput.scss'
+
+import LocaleContext from "scripts/contexts/LocaleContext"
 
 const FormInput = ({propTitle, propBody, propOnFormSubmit}) => {
+    const { locale } = useContext(LocaleContext)
     const [title, setTitle] = useState(propTitle || '')
     const [editorState, setEditorState] = useState(propBody || EditorState.createEmpty())
     const [limitChar, setLimitChar] = useState(propTitle ? propTitle.length : 0)
@@ -56,8 +60,14 @@ const FormInput = ({propTitle, propBody, propOnFormSubmit}) => {
                 <div className="form-input__wrapper">
                     <form onSubmit={onFormSubmit}>
                         <div className="form-input__display">
-                            <label className="form-input__label full-width text-right">Limit {limitChar}/50</label>
-                            <input className={titleInputStyle} type='text' placeholder="note's title/subject" onChange={onTitleInputChange} value={title} />
+                            <label className="form-input__label full-width text-right">
+                                {CreateNotePageHeader[locale].limit_wording} {limitChar}/50
+                            </label>
+                            <input className={titleInputStyle}
+                                   type='text'
+                                   placeholder={CreateNotePageHeader[locale].title_placeholder}
+                                   onChange={onTitleInputChange}
+                                   value={title} />
                         </div>
                         <div className="form-input__display">
                             <div className={`text-editor ${bodyInputStyle}`}>
@@ -67,12 +77,14 @@ const FormInput = ({propTitle, propBody, propOnFormSubmit}) => {
                                 wrapperClassName="wrapperClassName"
                                 editorClassName="editorClassName"
                                 onEditorStateChange={onEditorStateChange}
-                                placeholder="your note's description"
+                                placeholder={CreateNotePageHeader[locale].body_placeholder}
                                 />
                             </div>
                         </div>
                         <div className="form-input__display">
-                            <button>Submit</button>
+                            <button>
+                                {CreateNotePageHeader[locale].button_submit}
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -84,7 +96,7 @@ const FormInput = ({propTitle, propBody, propOnFormSubmit}) => {
 FormInput.propTypes = {
     title: PropTypes.string,
     body: PropTypes.any,
-    onFormSubmit: PropTypes.func.isRequired,
+    propOnFormSubmit: PropTypes.func.isRequired,
 }
 
 export default FormInput

@@ -26,9 +26,9 @@ const login = async ({ email, password }) => {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email, password }),
-    });
+    })
 
-    const responseJson = await response.json();
+    const responseJson = await response.json()
 
     return {
         error: (responseJson.status !== 'success'),
@@ -44,19 +44,19 @@ const register = async ({ name, email, password }) => {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({ name, email, password }),
-    });
+    })
 
-    const responseJson = await response.json();
+    const responseJson = await response.json()
 
     return {
         error: (responseJson.status !== 'success'),
         message: responseJson.message || 'No Message'
-    };
+    }
 }
 
 const getUserLogged = async () => {
-    const response = await fetchWithToken(`${CONFIG.base_url}/users/me`);
-    const responseJson = await response.json();
+    const response = await fetchWithToken(`${CONFIG.base_url}/users/me`)
+    const responseJson = await response.json()
 
     return {
         error: (responseJson.status !== 'success'),

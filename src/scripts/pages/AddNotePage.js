@@ -1,39 +1,43 @@
-import React, { Fragment } from "react"
+import React, { Fragment, useContext } from "react"
 
 import { addNote } from "scripts/data-resource/note/note-api"
 import { useNavigate } from "react-router-dom"
 import { toast } from 'react-toastify'
+import { FaPlus } from "react-icons/fa"
+import { CreateNotePageHeader} from "scripts/contents/page-header-content"
+import { NotificationContent } from "scripts/contents/notification-content"
 
 import AppBar from "scripts/components/AppBar/AppBar/AppBar"
 import AppBarAddNote from "scripts/components/ButtonActionGroup/AddNotePage/AppBarAddNote"
 import FormInput from "scripts/components/Form/FormInput/FormInput"
-import { FaPlus } from "react-icons/fa"
+import LocaleContext from "scripts/contexts/LocaleContext"
 
-const setHeadline = () => {
+const setHeadline = (locale) => {
     return {
         title: 'LittleNotes',
-        subTitle: 'create the new one',
+        subTitle: CreateNotePageHeader[locale].subtitle,
         subTitleIcon: <FaPlus />
     }
 }
 
-const submitData = async ({title, body}) => {
+const submitData = async ({title, body, locale}) => {
     await addNote({title, body})
-    toast.success('Note added successfully!');
+    toast.success(NotificationContent[locale].success_add_note)
 }
 
 const AddNotePage = () => {
     const navigate = useNavigate()
+    const { locale } = useContext(LocaleContext)
 
-    const onFormSubmit = ({title, body}) => {
-        submitData({title, body})
+    const onFormSubmit = async ({title, body}) => {
+        await submitData({title, body, locale})
         navigate('/')
     }
 
     return (
         <Fragment>
             <AppBar
-                headline={setHeadline()}
+                headline={setHeadline(locale)}
                 barAction={<AppBarAddNote />} />
             <FormInput propOnFormSubmit={onFormSubmit} />
         </Fragment>

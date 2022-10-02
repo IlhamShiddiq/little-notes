@@ -1,17 +1,21 @@
-import React from "react"
-import './NoteItem.js.scss'
+import React, { useContext } from "react"
 
 import PropTypes from 'prop-types'
 import { setLocalDate } from "scripts/helpers/DateTime/DateTimeHelper"
 import parser from 'html-react-parser'
+import './NoteItem.js.scss'
+
+import LocaleContext from "scripts/contexts/LocaleContext"
 
 const NoteItem = ({title, body, createdAt, buttonAction}) => {
+    const { locale } = useContext(LocaleContext)
+
     return (
         <div className="note-item">
             <div className="note-item__body">
                 <h1>{title}</h1>
                 {parser(body)}
-                <p className="note-item__info">{setLocalDate(createdAt)}</p>
+                <p className="note-item__info">{setLocalDate(createdAt, locale)}</p>
                 <div className="note-item__action">
                     {buttonAction}
                 </div>

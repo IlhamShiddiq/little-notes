@@ -1,4 +1,4 @@
-const setLocalDate = date => {
+const setLocalDate = (date, locale = 'id') => {
     const options = {
         weekday: "long",
         year: "numeric",
@@ -6,9 +6,12 @@ const setLocalDate = date => {
         day: "numeric"
     }
 
-    return new Date(date).toLocaleDateString("id-ID", options)
+    return new Date(date).toLocaleDateString(
+        (locale === 'id') ? 'id-ID' : 'en-EN',
+        options
+    )
 }
 
 export {
     setLocalDate
-};
+}
