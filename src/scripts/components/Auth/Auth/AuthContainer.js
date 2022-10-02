@@ -1,18 +1,21 @@
-import React, { Fragment } from "react"
+import React, { Fragment, useContext } from "react"
 
 import PropTypes from 'prop-types'
-import LoginForm from "../Login/LoginForm"
-import RegisterForm from "../RegisterForm/RegisterForm"
 import './AuthContainer.scss'
+
+import LoginForm from "../LoginForm/LoginForm"
+import RegisterForm from "../RegisterForm/RegisterForm"
+import LocaleContext from "scripts/contexts/LocaleContext"
 
 const AuthContainer = ({propIsLoginDisplay, onLoginSuccess}) => {
     const isLoginDisplay = propIsLoginDisplay || false
+    const { locale } = useContext(LocaleContext)
 
     return (
         <Fragment>
             <div className="auth-container">
                 <div className="auth-container__welcome">
-                    <img src={`${process.env.REACT_APP_BASE_URL}/images/littlenotes-welcome.png`} alt="Illustration"/>
+                    <img src={`${process.env.REACT_APP_BASE_URL}/images/${locale}-littlenotes-welcome.png`} alt="Illustration"/>
                 </div>
                 <div className="auth-container__form">
                     {
