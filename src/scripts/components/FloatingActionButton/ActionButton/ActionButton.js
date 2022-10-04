@@ -1,10 +1,13 @@
-import React from "react"
+import React, { useContext } from "react"
 import './ActionButton.scss'
+import ThemeContext from "scripts/contexts/ThemeContext"
 
 const ActionButton = ({icon, clickActionHandler}) => {
+    const { theme } = useContext(ThemeContext)
+
     return (
         <div className="fab__action-button">
-            <button onClick={clickActionHandler}>{icon}</button>
+            <button className={`fab__button-${theme}`} onClick={clickActionHandler}>{icon}</button>
         </div>
     )
 }

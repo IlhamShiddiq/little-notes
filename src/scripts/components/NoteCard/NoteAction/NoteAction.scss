@@ -7,8 +7,15 @@
         margin-right: 7px;
         border-radius: 10px;
         border: 0;
-        background-color: #F67C92;
         color: $white_color;
         cursor: pointer;
+    }
+
+    .light-note-action {
+        background-color: #F67C92;
+    }
+
+    .dark-note-action {
+        background-color: #633D88;
     }
 }

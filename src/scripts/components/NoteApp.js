@@ -6,7 +6,7 @@ import { confirmAlert } from "react-confirm-alert"
 import { putAccessToken, getUserLogged } from "scripts/data-resource/auth/auth-api"
 import { getStorageItem, setStorageItem } from "scripts/helpers/LocalStorage/LocalStorageHelper"
 import { LogoutDialogContent } from "scripts/contents/confirmation-dialog-content"
-import { LocaleProvider } from "scripts/contexts/LocaleContext"
+import BaseLayout from "./Layout/Base/BaseLayout"
 
 import LoginPage from "scripts/pages/LoginPage"
 import RegisterPage from "scripts/pages/RegisterPage"
@@ -21,9 +21,10 @@ import LoadingPage from "scripts/components/Utils/Loading/LoadingPage/LoadingPag
 
 const NoteApp = () => {
     const navigate = useNavigate()
-    const [authedUser, setAuthedUser] = useState(null)
-    const [initializing, setInitializing] = useState(true)
-    const [locale, setLocale] = useState(getStorageItem('locale') || 'en')
+    const [ authedUser, setAuthedUser ] = useState(null)
+    const [ initializing, setInitializing ] = useState(true)
+    const [ locale, setLocale ] = useState(getStorageItem('locale') || 'en')
+    const [ theme, setTheme ] = useState(getStorageItem('theme') || 'light')
 
     const initData = async () => {
         const { data } = await getUserLogged()
@@ -43,10 +44,11 @@ const NoteApp = () => {
 
     const onLogoutClicked = () => {
         confirmAlert({
-            overlayClassName: 'confirmation-alert-overlay-light',
+            overlayClassName: `confirmation-alert-overlay-${theme}`,
             customUI: ({ onClose }) => {
                 return <CustomConfirmationDialog
                     locale={locale}
+                    theme={theme}
                     message={LogoutDialogContent[locale].confirmation_wording}
                     onClose={onClose}
                     onClickAccepted={() => {
@@ -72,6 +74,15 @@ const NoteApp = () => {
         }, 1000)
     }
 
+    const toggleTheme = () => {
+        setTheme((prevTheme) => {
+            const themeValue = (prevTheme === 'light') ? 'dark' : 'light'
+            setStorageItem('theme', themeValue)
+
+            return themeValue
+        })
+    }
+
     const localeContextValue = useMemo(() => {
         return {
             locale,
@@ -79,12 +90,25 @@ const NoteApp = () => {
         }
     }, [locale])
 
+    const themeContextValue = useMemo(() => {
+        return {
+            theme,
+            toggleTheme
+        }
+    }, [theme])
+
     useEffect(() => {
         initData()
     }, [])
 
+    useEffect(() => {
+        document.body.className = `${theme}-theme`
+    }, [theme])
+
     return (
-        <LocaleProvider value={localeContextValue}>
+        <BaseLayout
+            localeContextValue={localeContextValue}
+            themeContextValue={themeContextValue} >
             {
                 initializing ? <LoadingPage /> : (
                     <Fragment>
@@ -111,7 +135,7 @@ const NoteApp = () => {
                     </Fragment>
                 )
             }
-        </LocaleProvider>
+        </BaseLayout>
     )
 }
 

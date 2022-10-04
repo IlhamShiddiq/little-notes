@@ -9,7 +9,6 @@
         position: relative;
         max-width: 959px;
         padding: 10px;
-        background-color: $primary_color;
         margin: auto;
         padding: 25px 35px;
         border-radius: 20px;
@@ -36,6 +35,14 @@
         .app-bar__action {
             text-align: right;
         }
+    }
+
+    .app-bar__body-light {
+        background-color: #BE374F;
+    }
+
+    .app-bar__body-dark {
+        background-color: #3B1B5A;
     }
 }
 

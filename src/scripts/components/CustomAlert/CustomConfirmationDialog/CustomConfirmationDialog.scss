@@ -1,5 +1,9 @@
 .confirmation-alert-overlay-light {
-    background-color: #fafafa88;
+    background-color: rgba(250, 250, 250, 0.5);
+}
+
+.confirmation-alert-overlay-dark {
+    background-color: rgba(75, 69, 81, 0.5);
 }
 
 .confirmation-alert {
@@ -27,12 +31,20 @@
         cursor: pointer;
     }
 
-    .confirmation-alert__reject-button {
+    .confirmation-alert__reject-button-light {
         background-color: #F67C92;
     }
 
-    .confirmation-alert__accept-button {
+    .confirmation-alert__reject-button-dark {
+        background-color: #633D88;
+    }
+
+    .confirmation-alert__accept-button-light {
         background-color: #BE374F;
+    }
+
+    .confirmation-alert__accept-button-dark {
+        background-color: #3B1B5A;
     }
 }
 
