@@ -9,9 +9,11 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css"
 import './FormInput.scss'
 
 import LocaleContext from "scripts/contexts/LocaleContext"
+import ThemeContext from "scripts/contexts/ThemeContext"
 
 const FormInput = ({propTitle, propBody, propOnFormSubmit}) => {
     const { locale } = useContext(LocaleContext)
+    const { theme } = useContext(ThemeContext)
     const [title, setTitle] = useState(propTitle || '')
     const [editorState, setEditorState] = useState(propBody || EditorState.createEmpty())
     const [limitChar, setLimitChar] = useState(propTitle ? propTitle.length : 0)
@@ -82,7 +84,7 @@ const FormInput = ({propTitle, propBody, propOnFormSubmit}) => {
                             </div>
                         </div>
                         <div className="form-input__display">
-                            <button>
+                            <button className={`form-input__${theme}-button`}>
                                 {CreateNotePageHeader[locale].button_submit}
                             </button>
                         </div>

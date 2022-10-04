@@ -43,10 +43,17 @@
 
             button {
                 margin-top: 15px;
-                background-color: #BE374F;
                 color: white;
                 border: none;
                 cursor: pointer;
+            }
+
+            button.form-input__light-button {
+                background-color: #BE374F;
+            }
+
+            button.form-input__dark-button {
+                background-color: #3B1B5A;
             }
         }
 

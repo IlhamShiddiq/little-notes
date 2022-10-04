@@ -1,4 +1,4 @@
-import React, {useState, useEffect, Fragment, useContext} from "react"
+import React, { useState, useEffect, Fragment, useContext } from "react"
 
 import { useSearchParams } from "react-router-dom"
 import { getArchivedNotes, unarchiveNote, deleteNote} from "scripts/data-resource/note/note-api"
@@ -17,11 +17,13 @@ import SearchBar from "scripts/components/Form/SearchBar/SearchBar"
 import NoteList from "../components/NoteCard/NoteList/NoteList"
 import CustomConfirmationDialog from "scripts/components/CustomAlert/CustomConfirmationDialog/CustomConfirmationDialog"
 import LocaleContext from "scripts/contexts/LocaleContext"
+import ThemeContext from "scripts/contexts/ThemeContext"
 
 const ArchivedNotePage = () => {
     const [searchParams, setSearchParams] = useSearchParams()
     const keyword = searchParams.get('keyword')
     const { locale } = useContext(LocaleContext)
+    const { theme } = useContext(ThemeContext)
     const [notes, setNotes] = useState([])
     const [display, setDisplay] = useState(getStorageItem('archivedDisplay') || 'list')
     const [searchKeyword, setSearchKeyword] = useState(keyword ||  '')
@@ -77,10 +79,11 @@ const ArchivedNotePage = () => {
 
     const onSetUnarchieveActionClicked = (id) => {
         confirmAlert({
-            overlayClassName: 'confirmation-alert-overlay-light',
+            overlayClassName: `confirmation-alert-overlay-${theme}`,
             customUI: ({ onClose }) => {
                 return <CustomConfirmationDialog
                     locale={locale}
+                    theme={theme}
                     message={UnarchiveDialogContent[locale].confirmation_wording}
                     onClose={onClose}
                     onClickAccepted={async () => {
@@ -95,10 +98,11 @@ const ArchivedNotePage = () => {
 
     const onDeleteActionClicked = (id) => {
         confirmAlert({
-            overlayClassName: 'confirmation-alert-overlay-light',
+            overlayClassName: `confirmation-alert-overlay-${theme}`,
             customUI: ({ onClose }) => {
                 return <CustomConfirmationDialog
                     locale={locale}
+                    theme={theme}
                     message={DeleteDialogContent[locale].confirmation_wording}
                     onClose={onClose}
                     onClickAccepted={async () => {

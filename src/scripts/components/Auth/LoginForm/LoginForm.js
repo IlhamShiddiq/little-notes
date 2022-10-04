@@ -29,7 +29,6 @@ const LoginForm = ({onLoginSuccess}) => {
     }
 
     return (
-        <div className="auth-container__form">
             <div className="auth-container__login">
                 <h1>{ LoginContent[locale].title }</h1>
                 <form onSubmit={ onLogin }>
@@ -60,7 +59,6 @@ const LoginForm = ({onLoginSuccess}) => {
                     </Link>
                 </p>
             </div>
-        </div>
     )
 }
 

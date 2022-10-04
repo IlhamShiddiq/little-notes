@@ -1,10 +1,13 @@
-import { Outlet } from "react-router-dom"
+import { LocaleProvider } from "scripts/contexts/LocaleContext"
+import { ThemeProvider } from "scripts/contexts/ThemeContext"
 
-const BaseLayout = () => {
+const BaseLayout = ({ children, localeContextValue, themeContextValue }) => {
     return (
-        <>
-            <Outlet />
-        </>
+        <LocaleProvider value={localeContextValue}>
+            <ThemeProvider value={themeContextValue}>
+                { children }
+            </ThemeProvider>
+        </LocaleProvider>
     )
 }
 

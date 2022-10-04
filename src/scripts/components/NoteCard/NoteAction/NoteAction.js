@@ -1,11 +1,14 @@
-import React from "react"
+import React, { useContext } from "react"
 import './NoteAction.scss'
 
 import PropTypes from 'prop-types'
+import ThemeContext from "scripts/contexts/ThemeContext"
 
 const NoteAction = ({dataId, label, onClickHandler = () => {}}) => {
+    const { theme } = useContext(ThemeContext)
+
     return (
-        <button className={`note-action`} onClick={() => onClickHandler(dataId)}>{label}</button>
+        <button className={`note-action ${theme}-note-action`} onClick={() => onClickHandler(dataId)}>{label}</button>
     )
 }
 
