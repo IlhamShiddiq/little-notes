@@ -20,7 +20,7 @@ const fetchWithToken = async (url, options = {}) => {
 }
 
 const login = async ({ email, password }) => {
-    const response = await fetch(`${CONFIG.base_url}/login`, {
+    const response = await fetch(`${CONFIG.base_url}/auth/login`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -37,13 +37,13 @@ const login = async ({ email, password }) => {
     }
 }
 
-const register = async ({ name, email, password }) => {
-    const response = await fetch(`${CONFIG.base_url}/register`, {
+const register = async ({ name, email, password, passwordConfirmation }) => {
+    const response = await fetch(`${CONFIG.base_url}/auth/register`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name, email, password }),
+        body: JSON.stringify({ full_name: name, email, password, password_confirmation: passwordConfirmation }),
     })
 
     const responseJson = await response.json()

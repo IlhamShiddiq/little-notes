@@ -39,7 +39,7 @@ const NoteApp = () => {
 
         const data = await initData()
         navigate('/')
-        toast.success(`Halo, ${data.name}!`)
+        toast.success(`Halo, ${data.full_name}!`)
     }
 
     const onLogoutClicked = () => {

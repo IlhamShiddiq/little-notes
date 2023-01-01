@@ -37,7 +37,7 @@ const RegisterForm = () => {
 
         if (password !== passwordConfirmation) toast.error(NotificationContent[locale].register.password_doest_march)
         else {
-            const {error, message} = await register({name, email, password})
+            const {error, message} = await register({name, email, password, passwordConfirmation})
             if (error) toast.error(message)
             else {
                 toast.success(NotificationContent[locale].register.success_register)
