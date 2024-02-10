@@ -3,6 +3,6 @@ services:
     container_name: little-notes
     image: little-notes:latest
     ports:
-      - 8089:8089
+      - 7002:8089
     environment:
       - REACT_APP_BASE_URL=https://littlenotes.ilhamsh.id/
