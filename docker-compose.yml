@@ -1,8 +1,10 @@
 services:
   little-notes:
+    build: .
     container_name: little-notes
     image: little-notes:latest
+    restart: always
     ports:
       - 7002:8089
     environment:
-      - REACT_APP_BASE_URL=https://littlenotes.ilhamsh.id/
+      - REACT_APP_BASE_URL=https://littlenotes.ilhamsh.id
